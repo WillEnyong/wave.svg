@@ -1,0 +1,9 @@
+<svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path fill="#007bff" fill-opacity="0.5">
+        <animate attributeName="d" dur="5s" repeatCount="indefinite" values=
+            "M0,100 C300,200 600,0 900,100 C1200,200 1500,100 1800,200 L1800,300 L0,300 Z; 
+            M0,200 C300,100 600,300 900,200 C1200,100 1500,200 1800,100 L1800,300 L0,300 Z; 
+            M0,100 C300,200 600,0 900,100 C1200,200 1500,100 1800,200 L1800,300 L0,300 Z"
+        />
+    </path>
+</svg>
