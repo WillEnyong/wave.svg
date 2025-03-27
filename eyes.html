@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="eyes-container" width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left Eye -->
+  <g id="left-eye">
+    <!-- Eye socket -->
+    <circle cx="100" cy="75" r="40" fill="white" stroke="#333" stroke-width="2"/>
+    
+    <!-- Iris (will follow cursor) -->
+    <circle id="left-iris" cx="100" cy="75" r="20" fill="#4682B4"/>
+    
+    <!-- Pupil -->
+    <circle cx="100" cy="75" r="10" fill="black"/>
+    
+    <!-- Eyelid (for blinking) -->
+    <path id="left-eyelid" d="M60,75 A40,40 0 0,1 140,75" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="d" values="
+        M60,75 A40,40 0 0,1 140,75;
+        M60,75 A40,0 0 0,1 140,75;
+        M60,75 A40,40 0 0,1 140,75"
+        dur="5s" keyTimes="0;0.02;0.04;1" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Right Eye -->
+  <g id="right-eye">
+    <!-- Eye socket -->
+    <circle cx="200" cy="75" r="40" fill="white" stroke="#333" stroke-width="2"/>
+    
+    <!-- Iris (will follow cursor) -->
+    <circle id="right-iris" cx="200" cy="75" r="20" fill="#4682B4"/>
+    
+    <!-- Pupil -->
+    <circle cx="200" cy="75" r="10" fill="black"/>
+    
+    <!-- Eyelid (for blinking) -->
+    <path id="right-eyelid" d="M160,75 A40,40 0 0,1 240,75" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="d" values="
+        M160,75 A40,40 0 0,1 240,75;
+        M160,75 A40,0 0 0,1 240,75;
+        M160,75 A40,40 0 0,1 240,75"
+        dur="5s" keyTimes="0;0.02;0.04;1" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>
+
+<script>
+// JavaScript untuk membuat mata mengikuti kursor
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('eyes-container');
+  const leftIris = document.getElementById('left-iris');
+  const rightIris = document.getElementById('right-iris');
+  
+  // Fungsi untuk mengupdate posisi iris
+  function updateEyePosition(e) {
+    const containerRect = container.getBoundingClientRect();
+    const containerCenterX = containerRect.left + containerRect.width / 2;
+    const containerCenterY = containerRect.top + containerRect.height / 2;
+    
+    // Hitung posisi relatif kursor terhadap tengah container
+    const relX = e.clientX - containerCenterX;
+    const relY = e.clientY - containerCenterY;
+    
+    // Hitung sudut (untuk menentukan arah)
+    const angle = Math.atan2(relY, relX);
+    
+    // Batasi pergerakan iris (agar tidak keluar dari bola mata)
+    const distance = Math.min(Math.sqrt(relX*relX + relY*relY) / 20, 15);
+    
+    // Posisi baru untuk iris kiri
+    const leftIrisX = 100 + Math.cos(angle) * distance;
+    const leftIrisY = 75 + Math.sin(angle) * distance;
+    
+    // Posisi baru untuk iris kanan
+    const rightIrisX = 200 + Math.cos(angle) * distance;
+    const rightIrisY = 75 + Math.sin(angle) * distance;
+    
+    // Update posisi iris
+    leftIris.setAttribute('cx', leftIrisX);
+    leftIris.setAttribute('cy', leftIrisY);
+    rightIris.setAttribute('cx', rightIrisX);
+    rightIris.setAttribute('cy', rightIrisY);
+  }
+  
+  // Tambahkan event listener untuk mouse move
+  document.addEventListener('mousemove', updateEyePosition);
+  
+  // Blink randomly (additional to the regular blinking animation)
+  setInterval(() => {
+    const blinkDuration = 200 + Math.random() * 100;
+    const eyelids = [document.getElementById('left-eyelid'), document.getElementById('right-eyelid')];
+    
+    eyelids.forEach(eyelid => {
+      eyelid.style.animation = 'none';
+      setTimeout(() => {
+        eyelid.style.animation = '';
+      }, 10);
+    });
+  }, 3000 + Math.random() * 4000);
+});
+</script>
+
+<style>
+  /* CSS untuk animasi kedip tambahan */
+  @keyframes blink {
+    0%, 100% { d: path('M60,75 A40,40 0 0,1 140,75'); }
+    50% { d: path('M60,75 A40,0 0 0,1 140,75'); }
+  }
+  
+  #eyes-container {
+    cursor: none;
+    background: transparent;
+  }
+</style>
